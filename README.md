@@ -137,3 +137,85 @@ Ensure the connection string inside `appsettings.json` points to the **SQL Serve
 This ensures the app connects to the `db` service defined in `docker-compose.yml`.
 
 ---
+
+---
+
+## 🚀 Running the System with Docker
+
+Use the `docker-compose.yml` to spin up the entire system including:
+
+- ASP.NET Core Web API (`app`)
+- SQL Server database (`db`)
+- Redis cache (`redis`)
+- Unit tests (`tests` - optional)
+
+### 🧪 1. Run Application + Database + Redis
+
+```bash
+docker compose up --build
+```
+
+- The `app` container will be built from `OkToPost/Dockerfile`.
+- Database and Redis will also start automatically.
+- Visit: [http://localhost:8080/swagger](http://localhost:8080/swagger)
+
+### ✅ 2. Run Only the Tests (Optional)
+
+```bash
+docker compose run --rm tests
+```
+
+- This will run the tests defined in `OkToPost.Tests` and print results to the console.
+
+### 🧹 3. Stop and Clean Up
+
+```bash
+docker compose down
+```
+
+- Stops all containers and removes the network and test container.
+
+---
+
+## 🗃️ Database & Migrations
+
+- The application uses **Entity Framework Core** with `Migrations`.
+- On startup, EF runs `db.Database.Migrate()` to automatically:
+  - Create the database if it does not exist.
+  - Apply all pending migrations.
+- You don't need to manually create tables or seed data.
+
+Make sure the connection string points to the **SQL Server container**:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=db;Database=OkToPost;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+}
+```
+
+---
+
+## ✅ Performance
+
+- `IDistributedCache` (Redis) used for "hot" URL lookups.
+- Avoids DB call for popular shortcodes.
+- Background increment of click count using `Task.Run(...)` with `IServiceScopeFactory`.
+
+---
+
+## ✅ Scalability
+
+- **Stateless** Web API with no in-memory dependency = horizontal scaling.
+- **Redis** enables distributed caching between containers.
+- **Docker** and `docker-compose` ensure consistent multi-container deployment.
+- Database, cache, and web servers are fully **separated services**.
+
+---
+
+## ✅ Reliability
+
+- Graceful handling of DB errors — returns 503 without crashing.
+- Caching avoids DB dependency for frequent lookups.
+- Tests run in isolation using Docker (`tests` service).
+- Logs and typed responses (`ApiErrorResponse`) improve observability and monitoring.
+
