@@ -196,6 +196,17 @@ Make sure the connection string points to the **SQL Server container**:
 ---
 
 ## ✅ Performance
+### 🔹 SQL Index Optimization
+- `ShortCode` is defined as the **primary key** to allow fast lookups during redirects.
+- A **unique non-clustered index** is applied to the `OriginalUrl` column to:
+  - Prevent duplicate entries
+  - Speed up searches when shortening an already existing URL
+
+### 🔹 Background Database Calls (Click Count Increment)
+- When a URL is resolved from cache, the click count is incremented **asynchronously in the background**.
+- This avoids blocking the user request while ensuring statistics are updated.
+- A scoped service is used within a `Task.Run` to safely access the database from a background thread.
+
 
 - `IDistributedCache` (Redis) used for "hot" URL lookups.
 - Avoids DB call for popular shortcodes.
@@ -218,42 +229,3 @@ Make sure the connection string points to the **SQL Server container**:
 - Caching avoids DB dependency for frequent lookups.
 - Tests run in isolation using Docker (`tests` service).
 - Logs and typed responses (`ApiErrorResponse`) improve observability and monitoring.
-
-
----
-
-## 👨‍💻 Object-Oriented Design (OOP)
-
-This project follows core principles of **Object-Oriented Programming**, including:
-
-- **Encapsulation**:
-  - Service logic is hidden inside `UrlShortenerService`, `SqlUrlRepository`, etc.
-- **Abstraction**:
-  - Interfaces like `IUrlRepository` and `ICodeGenerator` decouple implementation details.
-- **Dependency Injection**:
-  - All services are injected via constructor, allowing flexible swapping and mocking.
-- **Single Responsibility**:
-  - Each class (service, model, repository) has one clear responsibility.
-
----
-
-## 🧪 Test Project Overview
-
-- The test project (`OkToPost.Tests`) uses `xUnit` for test orchestration and `Moq` for mocking dependencies.
-- All external services (`IUrlRepository`, `ICodeGenerator`, `IDistributedCache`, etc.) are mocked for true unit testing.
-- The test project is containerized and executed using Docker.
-
-### ✅ Sample Tests Implemented:
-
-- **Shorten URL - existing URL**:
-  - Verifies that an already shortened URL returns the same code.
-- **Shorten URL - new URL**:
-  - Ensures a new short code is generated and stored.
-- **Redirect - existing short code**:
-  - Confirms redirect resolves and triggers click count update.
-- **Redirect - not found**:
-  - Ensures 404 is returned when short code does not exist.
-- **Click count increment**:
-  - Simulates multiple accesses and verifies click counter behavior.
-
-Tests are automatically executed via Docker using the `tests` service and printed to the console.
