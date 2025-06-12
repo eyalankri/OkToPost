@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OkToPost.Tests": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

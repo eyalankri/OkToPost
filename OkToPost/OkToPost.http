@@ -1,0 +1,6 @@
+@OkToPost_HostAddress = http://localhost:5223
+
+GET {{OkToPost_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
