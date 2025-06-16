@@ -36,6 +36,11 @@ jobs:
     # 2️⃣ בדיקות בתוך Docker Compose
     ############################################
 
+    - name: 🔧 Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
     - name: 🐳 Build and start containers
       run: docker-compose -f docker-compose.yml up -d --build
 
