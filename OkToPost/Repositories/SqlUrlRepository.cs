@@ -13,10 +13,10 @@ namespace OkToPost.Repositories
             _context = context;
         }
 
-        public async Task<UrlMapping> GetByCodeAsync(string code) =>
+        public async Task<UrlMapping?> GetByCodeAsync(string code) =>
             await _context.UrlMappings.FirstOrDefaultAsync(x => x.ShortCode == code);
 
-        public async Task<UrlMapping> GetByUrlAsync(string url) =>
+        public async Task<UrlMapping?> GetByUrlAsync(string url) =>
             await _context.UrlMappings.FirstOrDefaultAsync(x => x.OriginalUrl == url);
 
         public async Task AddAsync(UrlMapping mapping)
@@ -35,5 +35,4 @@ namespace OkToPost.Repositories
             }
         }
     }
-
 }
