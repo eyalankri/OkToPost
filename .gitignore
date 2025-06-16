@@ -19,7 +19,6 @@ obj/
 node_modules/
 
 # Ignore Docker-related local configs
-.env
 docker-compose.override.yml
 
 # Don't track log files

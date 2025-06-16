@@ -20,7 +20,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     ############################################
-    # 1️⃣ בדיקות מהירות מחוץ לדוקר (קוד נטו)
+    # 1️⃣ בדיקות מחוץ לדוקר
     ############################################
 
     - name: 🔄 Restore dependencies
@@ -33,7 +33,17 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     ############################################
-    # 2️⃣ בדיקות בתוך Docker Compose
+    # 🔧 התקנת Docker Compose
+    ############################################
+
+    - name: 🔧 Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose version
+
+    ############################################
+    # 2️⃣ בדיקות בתוך Docker
     ############################################
 
     - name: 🐳 Build and start containers
@@ -43,8 +53,7 @@ jobs:
       run: sleep 30
 
     - name: ✅ Run tests inside Docker container
-      run: |
-        SA_PASSWORD=EyalA\$1q2w! docker-compose run --rm tests dotnet test --no-build --verbosity normal
+      run: docker-compose run --rm tests dotnet test --no-build --verbosity normal
 
     - name: 🧹 Tear down containers
       if: always()
