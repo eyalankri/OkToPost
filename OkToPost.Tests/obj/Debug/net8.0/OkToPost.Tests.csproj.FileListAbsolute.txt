@@ -168,3 +168,4 @@ C:\Projects\_Job tasks\OkToPost\OkToPost.Tests\bin\Debug\net8.0\Moq.dll
 C:\Projects\_Job tasks\OkToPost\OkToPost.Tests\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
 C:\Projects\_Job tasks\OkToPost\OkToPost.Tests\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
 C:\Projects\_Job tasks\OkToPost\OkToPost.Tests\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Projects\_Job tasks\OkToPost\OkToPost.Tests\obj\Debug\net8.0\OkToPost.Tests.sourcelink.json

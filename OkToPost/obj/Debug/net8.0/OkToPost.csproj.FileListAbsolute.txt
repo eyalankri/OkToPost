@@ -169,3 +169,4 @@ C:\Projects\_Job tasks\OkToPost\OkToPost\obj\Debug\net8.0\OkToPost.csproj.CopyCo
 C:\Projects\_Job tasks\OkToPost\OkToPost\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
 C:\Projects\_Job tasks\OkToPost\OkToPost\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
 C:\Projects\_Job tasks\OkToPost\OkToPost\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Projects\_Job tasks\OkToPost\OkToPost\obj\Debug\net8.0\OkToPost.sourcelink.json

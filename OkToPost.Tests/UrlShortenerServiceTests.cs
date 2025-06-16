@@ -44,7 +44,7 @@ namespace OkToPost.Tests.Services
             string inputUrl = "https://test.com";
             string existingCode = "exist1";
 
-            _mockRepo.Setup(r => r.GetByUrlAsync(inputUrl)).ReturnsAsync(new UrlMapping
+            _mockRepo.Setup(r => r.GetByUrlAsync(inputUrl)).ReturnsAsync((UrlMapping?)new UrlMapping
             {
                 ShortCode = existingCode,
                 OriginalUrl = inputUrl
@@ -76,7 +76,6 @@ namespace OkToPost.Tests.Services
             _mockRepo.Setup(r => r.AddAsync(It.Is<UrlMapping>(m => m.OriginalUrl == inputUrl && m.ShortCode == generatedCode)))
                      .Returns(Task.CompletedTask);
 
-            // Correctly mock the SetAsync method used under the hood by SetStringAsync
             _mockCache.Setup(c =>
                 c.SetAsync(
                     It.IsAny<string>(),
@@ -103,7 +102,6 @@ namespace OkToPost.Tests.Services
             string code = "abc123";
             string originalUrl = "https://cached.com";
 
-            // Simulate value from cache
             byte[] cachedBytes = Encoding.UTF8.GetBytes(originalUrl);
 
             _mockCache.Setup(c =>
@@ -131,7 +129,7 @@ namespace OkToPost.Tests.Services
                 c.GetAsync(code, It.IsAny<CancellationToken>()))
                 .ReturnsAsync((byte[]?)null); // Cache miss
 
-            _mockRepo.Setup(r => r.GetByCodeAsync(code)).ReturnsAsync(new UrlMapping
+            _mockRepo.Setup(r => r.GetByCodeAsync(code)).ReturnsAsync((UrlMapping?)new UrlMapping
             {
                 ShortCode = code,
                 OriginalUrl = originalUrl,
