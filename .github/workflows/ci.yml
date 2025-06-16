@@ -19,6 +19,10 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    ############################################
+    # 1️⃣ בדיקות מהירות מחוץ לדוקר (קוד נטו)
+    ############################################
+
     - name: 🔄 Restore dependencies
       run: dotnet restore
 
@@ -28,20 +32,20 @@ jobs:
     - name: 🧪 Run unit tests outside Docker
       run: dotnet test --no-build --verbosity normal
 
-    - name: 🔧 Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
+    ############################################
+    # 2️⃣ בדיקות בתוך Docker Compose
+    ############################################
 
-    - name: 🐳 Build and start all containers
-      run: docker-compose --env-file .env -f docker-compose.yml up -d --build
+    - name: 🐳 Build and start containers
+      run: docker-compose -f docker-compose.yml up -d --build
 
-    - name: ⏱️ Wait for services to be ready
+    - name: ⏱️ Wait for services to initialize
       run: sleep 30
 
-    - name: ✅ Run tests inside oktopost-tests container
-      run: docker-compose exec -T oktopost-tests dotnet test --no-build --verbosity normal
+    - name: ✅ Run tests inside Docker container
+      run: |
+        SA_PASSWORD=EyalA\$1q2w! docker-compose run --rm tests dotnet test --no-build --verbosity normal
 
     - name: 🧹 Tear down containers
       if: always()
-      run: docker-compose --env-file .env down --volumes --remove-orphans
+      run: docker-compose down --volumes --remove-orphans
