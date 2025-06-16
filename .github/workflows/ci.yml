@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout source code
+      uses: actions/checkout@v4
+
+    - name: 🛠️ Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    ############################################
+    # 1️⃣ בדיקות מהירות מחוץ לדוקר (קוד נטו)
+    ############################################
+
+    - name: 🔄 Restore dependencies
+      run: dotnet restore
+
+    - name: 🧱 Build the solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: 🧪 Run unit tests outside Docker
+      run: dotnet test --no-build --verbosity normal
+
+    ############################################
+    # 2️⃣ בדיקות בתוך Docker Compose
+    ############################################
+
+    - name: 🐳 Build and start containers
+      run: docker-compose -f docker-compose.yml up -d --build
+
+    - name: ⏱️ Wait for services to initialize
+      run: sleep 30
+
+    - name: ✅ Run tests inside Docker container
+      run: docker-compose exec -T oktopost-tests dotnet test --no-build --verbosity normal
+
+    - name: 🧹 Tear down containers
+      if: always()
+      run: docker-compose down --volumes --remove-orphans
