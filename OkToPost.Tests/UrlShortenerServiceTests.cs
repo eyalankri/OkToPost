@@ -1,17 +1,11 @@
-﻿using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Moq;
-using OkToPost.DTOs;
 using OkToPost.Models;
 using OkToPost.Repositories;
-using OkToPost.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
-using Xunit;
 using OkToPost.Utils;
 
 namespace OkToPost.Tests.Services
