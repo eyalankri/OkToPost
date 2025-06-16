@@ -53,7 +53,7 @@ jobs:
       run: sleep 30
 
     - name: ✅ Run tests inside Docker container
-      run: docker-compose run --rm tests dotnet test --no-build --verbosity normal
+      run: docker-compose run --rm tests dotnet test
 
     - name: 🧹 Tear down containers
       if: always()
