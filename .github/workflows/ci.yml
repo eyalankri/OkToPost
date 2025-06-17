@@ -20,7 +20,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     ############################################
-    # 1️⃣ בדיקות מחוץ לדוקר
+    # 1️⃣ בדיקות מחוץ לדוקר.
     ############################################
 
     - name: 🔄 Restore dependencies
@@ -48,6 +48,8 @@ jobs:
 
     - name: 🐳 Build and start containers
       run: docker-compose -f docker-compose.yml up -d --build
+      env:
+        SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
 
     - name: ⏱️ Wait for services to initialize
       run: sleep 30
